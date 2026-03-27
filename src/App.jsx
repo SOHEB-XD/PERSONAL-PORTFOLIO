@@ -444,10 +444,13 @@ const Skills = () => {
                         
                         <div className="grid grid-cols-2 gap-4">
                             {[
-                                { title: 'Frontend', tech: 'React, Tailwind, Three.js' },
-                                { title: 'Backend', tech: 'Node.js, Express' },
-                                { title: 'Database', tech: 'MongoDB' },
-                                { title: 'Tools', tech: 'Git, GitHub' }
+                                { title: 'Languages', tech: 'HTML, CSS, JavaScript, PHP (Basic)' },
+                                { title: 'Frameworks/Libraries', tech: 'React.js, Express.js, Bootstrap, TailwindCSS' },
+                                { title: 'Backend', tech: 'Node.js' },
+                                { title: 'Databases', tech: 'MongoDB, MySQL (Basic)' },
+                                { title: 'Tools', tech: 'Git, GitHub, Postman, VS Code' },
+                                { title: 'Concepts', tech: 'REST APIs, Authentication, CRUD Operations' }
+                               
                             ].map((item, idx) => (
                                 <ScrollReveal key={idx} delay={idx * 100 + 300}>
                                     <div className="p-5 border border-white/10 hover:border-white/40 transition-colors bg-black/50 backdrop-blur-sm group">
@@ -516,7 +519,7 @@ const Projects = () => {
             live: "#"
         },
         {
-            title: "Upcoming..",
+            title: "Employee Management System — React task tracking app",
             desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis deleniti libero, consequuntur optio dolorem tenetur iste vitae quam quidem doloribus.",
             tech: ["Next.js", "MongoDB", "Tailwind"],
             github: "#",

@@ -101,6 +101,4 @@ src/
 * **3D Object:** Modify the CrystalScene component. You can change geometry (Torus, Sphere, Icosahedron) or materials (MeshPhysicalMaterial) to change the look of the floating object.  
 * **Data:** Update the arrays in Projects, Skills, and Education components to reflect your own data.
 
-## **📄 License**
-
-This project is open source and available under the [MIT License](https://www.google.com/search?q=LICENSE).
+Live: https://sohebportfolio.online/

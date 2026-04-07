@@ -22,7 +22,7 @@ const Skills = ({ ScrollReveal }) => {
 
                         <div className="grid grid-cols-2 gap-4">
                             {[
-                                { title: 'Languages', tech: 'HTML, CSS, JavaScript, PHP (Basic)' },
+                                { title: 'Languages', tech: 'HTML, CSS, JavaScript' },
                                 { title: 'Frameworks/Libraries', tech: 'React.js, Express.js, Bootstrap, TailwindCSS' },
                                 { title: 'Backend', tech: 'Node.js' },
                                 { title: 'Databases', tech: 'MongoDB, MySQL (Basic)' },

@@ -17,7 +17,7 @@ const Education = ({ ScrollReveal }) => {
                             <div className="absolute -left-[41px] md:-left-[57px] top-1 w-4 h-4 bg-black border border-cyan-500 rounded-full shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
                             <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
                                 <h3 className="text-2xl font-bold text-white uppercase">Mern Stack Training</h3>
-                                <span className="text-xs font-mono text-cyan-500">2025 – Present</span>
+                                <span className="text-xs font-mono text-cyan-500">2025 – 2026</span>
                             </div>
                             <p className="text-sm text-gray-400 uppercase tracking-widest mb-4">TOPs Technologies</p>
                             <p className="text-gray-500 text-sm max-w-xl leading-relaxed">

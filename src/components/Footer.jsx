@@ -28,7 +28,7 @@ const Footer = ({ ScrollReveal, Icons }) => {
 
                 <ScrollReveal delay={400}>
                     <p className="text-gray-600 text-xs font-mono uppercase tracking-widest">
-                        © 2025 Built with React & Three.js. <br /> By Soheb.
+                        © 2025 Built with React & Three.js. <br /> By Soheb Khan.
                     </p>
                 </ScrollReveal>
             </div>

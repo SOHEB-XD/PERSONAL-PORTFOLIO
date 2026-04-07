@@ -46,9 +46,12 @@ const TopNavbar = ({Icons}) => {
                             {link.label}
                         </button>
                     ))}
-                    <button onClick={() => scrollTo('contact')} className="px-6 py-2 border border-white/20 hover:bg-white hover:text-black rounded-sm text-[10px] font-bold text-white transition-all tracking-widest uppercase">
-                        Hire Me
-                    </button>
+                    <a href="https://drive.google.com/file/d/1jcs7RcAfwd1b84GfWYalDWA1cZ7BSujp/view?usp=drive_link" target="_blank"> 
+                        <button className="px-6 py-2 border border-white/20 hover:bg-white hover:text-black rounded-sm text-[10px] font-bold text-white transition-all tracking-widest uppercase">
+                            Resume
+                        </button>
+                    </a>
+                    
                 </div>
                 <button
                     className="md:hidden text-white p-2"

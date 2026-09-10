@@ -19,10 +19,10 @@ const TopNavbar = ({Icons}) => {
     };
 
     const navLinks = [
-        { id: 'about', label: 'Home' },
-        { id: 'skills', label: 'Stack' },
-        { id: 'projects', label: 'Works' },
-        { id: 'education', label: 'Education' },
+        { id: 'about', label: 'About' },
+        { id: 'experience', label: 'Experience' },
+        { id: 'projects', label: 'Work' },
+        { id: 'skills', label: 'Skills' },
         { id: 'contact', label: 'Contact' },
     ];
 
@@ -32,7 +32,7 @@ const TopNavbar = ({Icons}) => {
                 : 'bg-transparent border-transparent py-6'
             }`}>
             <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-                <div className="text-xl font-bold tracking-tighter flex items-center gap-2 cursor-pointer" onClick={() => scrollTo('about')}>
+                <div className="text-xl font-bold tracking-tighter flex items-center gap-2 cursor-pointer" onClick={() => scrollTo('hero')}>
 
                     <span className="text-white  font-light tracking-widest">PORTFOLIO</span>
                 </div>

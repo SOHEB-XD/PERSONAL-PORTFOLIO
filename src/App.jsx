@@ -3,9 +3,15 @@ import CustomCursor from './components/CustomCursor';
 import LiquidScene from './components/LiquidScene';
 import TopNavbar from './components/TopNavbar';
 import Hero from './components/Hero';
-import Skills from './components/Skills';
+import About from './components/About';
+import Experience from './components/Experience';
 import Projects from './components/Projects';
+import WhatIBuild from './components/WhatIBuild';
+import Skills from './components/Skills';
+import Highlights from './components/Highlights';
 import Education from './components/Education';
+import Currently from './components/Currently';
+import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 /* --------------------------------------------------------------------------
@@ -71,11 +77,17 @@ const App = () => {
             <LiquidScene />
             <TopNavbar Icons ={Icons} />
             <main className="relative pt-6">
-                <Hero ScrollReveal={ScrollReveal} />
+                <Hero />
+                <About ScrollReveal={ScrollReveal} />
+                <Experience ScrollReveal={ScrollReveal} />
+                <Projects ScrollReveal={ScrollReveal} Icons={Icons} />
+                <WhatIBuild ScrollReveal={ScrollReveal} />
                 <Skills ScrollReveal={ScrollReveal} />
-                <Projects ScrollReveal={ScrollReveal} Icons ={Icons} />
+                <Highlights ScrollReveal={ScrollReveal} />
                 <Education ScrollReveal={ScrollReveal} />
-                <Footer ScrollReveal={ScrollReveal} Icons ={Icons}/>
+                <Currently ScrollReveal={ScrollReveal} />
+                <Contact ScrollReveal={ScrollReveal} />
+                <Footer ScrollReveal={ScrollReveal} Icons={Icons} />
             </main>
         </div>
     );

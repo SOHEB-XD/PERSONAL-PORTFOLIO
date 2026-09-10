@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 const Footer = ({ ScrollReveal, Icons }) => {
     return (
-        <footer id="contact" className="py-20 bg-black text-center relative z-10 border-t border-white/10">
+        <footer id="footer" className="py-20 bg-black text-center relative z-10 border-t border-white/10">
             <div className="max-w-2xl mx-auto px-8 md:px-32">
                 <ScrollReveal>
                     <h2 className="text-3xl font-bold text-white mb-8 tracking-tight">READY TO <span className="text-gray-500">DEPLOY?</span></h2>

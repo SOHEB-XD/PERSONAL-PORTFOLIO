@@ -11,13 +11,19 @@ const LiquidScene = () => {
         scene.background = new THREE.Color(0x050505);
 
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 12);
+        camera.position.set(0, 0, 8); // Start much closer
         camera.lookAt(0, 0, 0);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        // Mobile performance optimization
+        const isMobile = window.innerWidth < 768;
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
         mount.appendChild(renderer.domElement);
+
+        // Reduced Motion Check
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // --- GROUP ---
         const mainGroup = new THREE.Group();
@@ -47,30 +53,26 @@ const LiquidScene = () => {
         // --- 2. ORBITING RINGS (Gyroscope Style) ---
         const ringGeo = new THREE.TorusGeometry(3.5, 0.15, 16, 100);
 
-        // Ring 1
         const ring1 = new THREE.Mesh(ringGeo, materialDark);
         mainGroup.add(ring1);
 
-        // Ring 2
         const ring2 = new THREE.Mesh(ringGeo, materialChrome);
         ring2.rotation.x = Math.PI / 2;
-        ring2.scale.set(0.85, 0.85, 0.85); // Slightly smaller
+        ring2.scale.set(0.85, 0.85, 0.85);
         mainGroup.add(ring2);
 
-        // Ring 3
         const ring3 = new THREE.Mesh(ringGeo, materialDark);
         ring3.rotation.x = Math.PI / 4;
-        ring3.scale.set(1.15, 1.15, 1.15); // Larger
+        ring3.scale.set(1.15, 1.15, 1.15);
         mainGroup.add(ring3);
 
         // --- 3. SATELLITE PARTICLES ---
-        const particleCount = 20;
+        const particleCount = isMobile ? 10 : 20;
         const particleGroup = new THREE.Group();
         const pGeo = new THREE.SphereGeometry(0.15, 8, 8);
 
         for (let i = 0; i < particleCount; i++) {
             const mesh = new THREE.Mesh(pGeo, materialChrome);
-            // Random orbit positions
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos(2 * Math.random() - 1);
             const r = 4.5 + Math.random() * 1.0;
@@ -82,16 +84,15 @@ const LiquidScene = () => {
         }
         mainGroup.add(particleGroup);
 
-
         // --- LIGHTING ---
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
         scene.add(ambientLight);
 
-        const light1 = new THREE.PointLight(0x40e0d0, 5, 60); // Turquoise highlight
+        const light1 = new THREE.PointLight(0x40e0d0, 5, 60);
         light1.position.set(8, 5, 5);
         scene.add(light1);
 
-        const light2 = new THREE.PointLight(0x9370db, 5, 60); // Purple highlight
+        const light2 = new THREE.PointLight(0x9370db, 5, 60);
         light2.position.set(-8, -5, 5);
         scene.add(light2);
 
@@ -99,61 +100,102 @@ const LiquidScene = () => {
         light3.position.set(0, 10, 10);
         scene.add(light3);
 
-        // --- INTERACTION ---
+        // --- INTERACTION & SCROLL ---
+        let targetMouseX = 0;
+        let targetMouseY = 0;
         let mouseX = 0;
         let mouseY = 0;
+        let targetScrollY = 0;
+        let currentScrollY = 0;
 
         const handleMouseMove = (event) => {
-            mouseX = (event.clientX - window.innerWidth / 2) * 0.0005;
-            mouseY = (event.clientY - window.innerHeight / 2) * 0.0005;
+            if (prefersReducedMotion) return;
+            // Increased range for more noticeable interaction
+            targetMouseX = (event.clientX - window.innerWidth / 2) * 0.001;
+            targetMouseY = (event.clientY - window.innerHeight / 2) * 0.001;
         };
+        
+        const handleScroll = () => {
+            targetScrollY = window.scrollY;
+        };
+
         window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         const clock = new THREE.Clock();
+        let animationFrameId;
 
         const animate = () => {
+            // Pause animation when tab is not visible to save resources
+            if (document.hidden) {
+                animationFrameId = requestAnimationFrame(animate);
+                return;
+            }
+
             const time = clock.getElapsedTime();
 
-            // Rotate Core
-            core.rotation.y = time * 0.2;
-            core.rotation.z = time * 0.1;
+            if (!prefersReducedMotion) {
+                // Subtle continual rotation
+                core.rotation.y = time * 0.2;
+                core.rotation.z = time * 0.1;
 
-            // Rotate Rings on different axes
-            ring1.rotation.y = time * 0.15;
-            ring1.rotation.x = Math.sin(time * 0.2) * 0.5;
+                ring1.rotation.y = time * 0.15;
+                ring1.rotation.x = Math.sin(time * 0.2) * 0.5;
 
-            ring2.rotation.y = time * 0.2;
-            ring2.rotation.z = time * 0.1;
+                ring2.rotation.y = time * 0.2;
+                ring2.rotation.z = time * 0.1;
 
-            ring3.rotation.z = time * 0.1;
-            ring3.rotation.y = Math.cos(time * 0.15) * 0.5;
+                ring3.rotation.z = time * 0.1;
+                ring3.rotation.y = Math.cos(time * 0.15) * 0.5;
 
-            // Orbit Particles
-            particleGroup.rotation.y = -time * 0.1;
-            particleGroup.rotation.z = time * 0.05;
+                particleGroup.rotation.y = -time * 0.1;
+                particleGroup.rotation.z = time * 0.05;
 
-            // Interactive Tilt
-            mainGroup.rotation.x = mouseY * 0.5;
-            mainGroup.rotation.y = mouseX * 0.5;
+                // Smooth pointer interpolation
+                mouseX += (targetMouseX - mouseX) * 0.05;
+                mouseY += (targetMouseY - mouseY) * 0.05;
+
+                // Scroll Interpolation
+                currentScrollY += (targetScrollY - currentScrollY) * 0.08;
+                const scrollProgress = currentScrollY * 0.001; // Increased scroll weight
+
+                // Apply elegant interactive tilt + scroll rotation
+                mainGroup.rotation.x = mouseY * 1.5 + (scrollProgress * 0.5);
+                mainGroup.rotation.y = mouseX * 1.5 + (scrollProgress * 0.2);
+                
+                // Very subtle camera X/Y parallax for physical depth
+                camera.position.x = mouseX * -2.5;
+                camera.position.y = mouseY * 2.5;
+
+                // Subtle lighting response
+                light1.position.x = 8 + (mouseX * 15);
+                light2.position.x = -8 + (mouseX * 15);
+
+                // DOLLY-ZOOM: Aggressive camera push INTO the artifact on scroll.
+                // The artifact dominates initially (z=8) and the user flies through it.
+                camera.position.z = 8 - (scrollProgress * 15.0);
+            }
 
             renderer.render(scene, camera);
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         };
+        
         animate();
 
         const handleResize = () => {
+            const isMobileView = window.innerWidth < 768;
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
 
             if (mainGroup) {
-                if (window.innerWidth < 768) {
-                    mainGroup.position.set(0, 0, -2);
-                    mainGroup.scale.set(0.65, 0.65, 0.65);
+                if (isMobileView) {
+                    mainGroup.position.set(0, -1, -2);
+                    mainGroup.scale.set(0.9, 0.9, 0.9);
                 } else {
-                    // Moved further left to -5
-                    mainGroup.position.set(-7, 0, 0);
-                    mainGroup.scale.set(1, 1, 1);
+                    // Central/Right-weighted, massive scale to dominate 40-50% of the screen
+                    mainGroup.position.set(3.5, 0, -1);
+                    mainGroup.scale.set(1.4, 1.4, 1.4);
                 }
             }
         };
@@ -162,17 +204,20 @@ const LiquidScene = () => {
 
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(animationFrameId);
             if (mount) mount.removeChild(renderer.domElement);
             coreGeo.dispose();
             ringGeo.dispose();
             pGeo.dispose();
             materialChrome.dispose();
             materialDark.dispose();
+            renderer.dispose();
         };
     }, []);
 
-    return <div ref={mountRef} className="fixed top-0 left-0 w-full h-full -z-10" />;
+    return <div ref={mountRef} className="fixed top-0 left-0 w-full h-full -z-10 bg-[#050505]" />;
 };
 
 export default LiquidScene;

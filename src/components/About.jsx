@@ -60,7 +60,7 @@ const About = () => {
                     {/* Section label row */}
                     <div className="flex justify-between items-baseline mb-16 md:mb-24">
                         <motion.p
-                            variants={up}
+                            variants={dim}
                             className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500"
                         >
                             About
@@ -84,9 +84,9 @@ const About = () => {
                         </motion.span>
                     </h2>
 
-                    {/* Supporting paragraph — offset right on desktop */}
+                    {/* Supporting paragraph — static/fade */}
                     <motion.p
-                        variants={up}
+                        variants={dim}
                         className="text-sm md:text-base text-gray-400 font-light leading-relaxed max-w-xl md:ml-auto"
                     >
                         I work across the full MERN stack — React, Node.js,
@@ -120,7 +120,7 @@ const About = () => {
                     className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-12"
                 >
                     {capabilities.map((cap, idx) => (
-                        <motion.div key={idx} variants={up}>
+                        <motion.div key={idx} variants={dim}>
                             <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-gray-500 mb-4">
                                 {cap.label}
                             </p>

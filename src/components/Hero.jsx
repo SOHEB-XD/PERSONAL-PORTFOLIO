@@ -1,249 +1,130 @@
-import React, { useRef, useCallback, useState } from 'react';
-import { motion, useReducedMotion } from "motion/react";
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 
-/* --------------------------------------------------------------------------
-   MAGNETIC CTA BUTTON
-   Tracks mouse position relative to its center and applies a subtle
-   spring-physics offset. Falls back to a static button on touch devices
-   and when prefers-reduced-motion is active.
-   -------------------------------------------------------------------------- */
-const HeroButton = ({ children, onClick, variant = "primary" }) => {
-    const ref = useRef(null);
-    const shouldReduceMotion = useReducedMotion();
-    const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-    const isPrimary = variant === 'primary';
-
-    const handleMouseMove = useCallback(
-        (e) => {
-            if (shouldReduceMotion || !ref.current) return;
-            const rect = ref.current.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            setOffset({ x: x * 0.15, y: y * 0.15 });
-        },
-        [shouldReduceMotion]
-    );
-
-    const reset = useCallback(() => setOffset({ x: 0, y: 0 }), []);
-
-    return (
-        <motion.button
-            ref={ref}
-            onClick={onClick}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={reset}
-            animate={{ x: offset.x, y: offset.y }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17, mass: 0.4 }}
-            className={`
-                group relative inline-flex items-center gap-2.5
-                px-7 py-3.5 sm:px-8
-                text-[11px] font-bold uppercase tracking-[0.15em]
-                transition-colors duration-300
-                focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white
-                ${isPrimary
-                    ? 'bg-white text-black hover:bg-gray-200'
-                    : 'bg-transparent border border-white/25 text-white hover:bg-white/5 hover:border-white/40'
-                }
-            `}
-        >
-            <span>{children}</span>
-            <svg
-                className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2.5}
-            >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                />
-            </svg>
-        </motion.button>
-    );
-};
-
-/* --------------------------------------------------------------------------
-   HERO SECTION
-   -------------------------------------------------------------------------- */
 const Hero = () => {
     const shouldReduceMotion = useReducedMotion();
+    const containerRef = useRef(null);
 
-    const scrollTo = (id) => {
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-    };
+    // Track scroll progress purely within the Hero section
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end start"]
+    });
 
-    /* ── Orchestrated animation variants ──────────────────────────────── */
+    // ── DOLLY ZOOM TYPOGRAPHY PARALLAX ──
+    // As the camera pushes INTO the 3D artifact on scroll, 
+    // the typography must move outward and recede to clear the path.
 
-    // Parent container: staggers children as a single choreographed sequence
-    const container = {
-        hidden: {},
-        visible: {
-            transition: {
-                staggerChildren: shouldReduceMotion ? 0 : 0.1,
-                delayChildren: shouldReduceMotion ? 0 : 0.3,
-            },
-        },
-    };
+    // Role & Statement move Left and fade out early
+    const roleX = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : -300]);
+    const roleOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
-    // Mask-reveal: text slides upward from behind an overflow-hidden wrapper
-    const maskReveal = {
-        hidden: shouldReduceMotion
-            ? { opacity: 0 }
-            : { y: '110%' },
-        visible: shouldReduceMotion
-            ? { opacity: 1, transition: { duration: 0.3 } }
-            : {
-                  y: '0%',
-                  transition: {
-                      duration: 0.9,
-                      ease: [0.33, 1, 0.68, 1],
-                  },
-              },
-    };
+    // Metadata (01/07, Surat) moves Up/Right and Down/Right
+    const metaTopY = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : -50]);
+    const metaBottomY = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : 50]);
+    const metaOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
-    // Fade-up for secondary elements
-    const fadeUp = {
-        hidden: {
-            opacity: 0,
-            y: shouldReduceMotion ? 0 : 20,
-        },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.7,
-                ease: [0.33, 1, 0.68, 1],
-            },
-        },
-    };
+    // Spatial Annotations move outward away from the expanding artifact
+    const anno1X = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : -150]);
+    const anno2X = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : 150]);
+    const anno3Y = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : 150]);
 
     return (
         <section
+            ref={containerRef}
             id="hero"
-            className="relative min-h-screen w-full flex items-center overflow-hidden pt-20 pb-16 md:pt-0 md:pb-0"
+            className="relative h-[100svh] w-full flex items-center overflow-hidden"
             aria-label="Introduction"
         >
-            {/* ── Main content ── */}
-            <motion.div
-                variants={container}
-                initial="hidden"
-                animate="visible"
-                className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16"
-            >
-                {/* Right-aligned on md+, centered on mobile */}
-                <div className="text-center md:text-right md:ml-auto md:max-w-2xl lg:max-w-3xl">
+            {/* INITIAL LOAD BLACK MASK */}
+            {/* Rapid opening (< 1s) to reveal the artifact quickly */}
+            <motion.div 
+                className="absolute inset-0 bg-[#050505] z-0 pointer-events-none"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+            />
 
-                    {/* ── Eyebrow ── */}
-                    <div className="overflow-hidden mb-4 md:mb-8">
-                        <motion.p
-                            variants={maskReveal}
-                            className="text-[11px] md:text-xs font-mono uppercase tracking-[0.3em] text-gray-500"
-                        >
-                            Soheb Khan — Full-Stack Developer
-                        </motion.p>
-                    </div>
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col justify-center h-full pointer-events-none">
+                
+                {/* ── EDITORIAL METADATA ── */}
+                <motion.div 
+                    style={{ y: metaTopY, opacity: metaOpacity }}
+                    className="absolute top-24 md:top-32 right-6 md:right-12 lg:right-16 pointer-events-auto"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2, duration: 0.4 }}
+                >
+                    <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500">01 / 07</p>
+                </motion.div>
+                
+                <motion.div 
+                    style={{ y: metaBottomY, opacity: metaOpacity }}
+                    className="absolute bottom-8 md:bottom-12 right-6 md:right-12 lg:right-16 text-right pointer-events-auto"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2, duration: 0.4 }}
+                >
+                    <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500">SURAT / INDIA</p>
+                </motion.div>
 
-                    {/* ── Main heading ── */}
-                    <h1 className="sr-only">Full-Stack Developer</h1>
+                {/* ── ROLE & POSITIONING (Center-Left) ── */}
+                <motion.div 
+                    style={{ x: roleX, opacity: roleOpacity }}
+                    className="absolute top-[60%] md:top-1/2 -translate-y-1/2 left-6 md:left-12 lg:left-16 max-w-[280px] md:max-w-sm pointer-events-auto"
+                    initial={{ opacity: 0, x: -15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+                >
+                    <h2 className="text-[11px] md:text-xs font-mono uppercase tracking-[0.25em] text-white mb-3 md:mb-5 flex items-center gap-3">
+                        <span className="w-4 h-px bg-white/50" />
+                        MERN STACK DEVELOPER
+                    </h2>
+                    <p className="text-sm md:text-base text-gray-400 font-light leading-relaxed">
+                        Building production web applications and practical AI-powered experiences.
+                    </p>
+                </motion.div>
 
-                    <div aria-hidden="true" className="mb-8 md:mb-10">
-                        <div className="overflow-hidden">
-                            <motion.div
-                                variants={maskReveal}
-                                className="text-[clamp(2.75rem,9vw,8rem)] font-bold tracking-tight leading-[0.9] text-white"
-                            >
-                                FULL-STACK
-                            </motion.div>
-                        </div>
-                        <div className="overflow-hidden mt-1 md:mt-2">
-                            <motion.div
-                                variants={maskReveal}
-                                className="text-[clamp(2.75rem,9vw,8rem)] font-bold tracking-tight leading-[0.9] text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600"
-                            >
-                                DEVELOPER
-                            </motion.div>
-                        </div>
-                    </div>
+                {/* ── SPATIAL ANNOTATIONS ── */}
+                {/* Annotation 1: Top Left-ish (Near Artifact) */}
+                <motion.div 
+                    style={{ x: anno1X, y: metaTopY, opacity: metaOpacity }}
+                    className="absolute top-[25%] left-[30%] hidden md:flex items-center gap-2 pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6, duration: 0.4 }}
+                >
+                    <span className="text-[9px] font-mono text-gray-500 tracking-widest">MONGODB / NODE</span>
+                    <span className="w-8 h-px bg-gray-700/50" />
+                </motion.div>
 
-                    {/* ── Divider ── */}
-                    <motion.div
-                        variants={fadeUp}
-                        className="w-12 h-px bg-white/20 mb-6 md:mb-8 mx-auto md:ml-auto md:mr-0"
-                    />
+                {/* Annotation 2: Middle Far-Right (Next to Artifact) */}
+                <motion.div 
+                    style={{ x: anno2X, opacity: metaOpacity }}
+                    className="absolute top-[45%] right-6 md:right-[20%] flex items-center gap-2 pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.7, duration: 0.4 }}
+                >
+                    <span className="w-6 h-px bg-gray-700/50 hidden md:block" />
+                    <span className="text-[9px] font-mono text-gray-500 tracking-widest">GEMINI AI INTEGRATION</span>
+                </motion.div>
 
-                    {/* ── Supporting statement ── */}
-                    <motion.p
-                        variants={fadeUp}
-                        className="text-sm md:text-base text-gray-400 font-light leading-relaxed max-w-md mx-auto md:ml-auto md:mr-0 mb-10 md:mb-12"
-                    >
-                        Building production web applications and AI-powered
-                        experiences with{' '}
-                        <span className="text-white font-normal">React</span>,{' '}
-                        <span className="text-white font-normal">Node.js</span>,
-                        and{' '}
-                        <span className="text-white font-normal">MongoDB</span>.
-                    </motion.p>
+                {/* Annotation 3: Bottom Center (Below Artifact) */}
+                <motion.div 
+                    style={{ y: anno3Y, opacity: metaOpacity }}
+                    className="absolute bottom-[20%] left-[45%] md:left-[55%] hidden md:flex flex-col items-center gap-2 pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8, duration: 0.4 }}
+                >
+                    <span className="h-6 w-px bg-gray-700/50" />
+                    <span className="text-[9px] font-mono text-gray-500 tracking-widest text-center leading-relaxed">
+                        PRODUCTION<br/>DEBUGGING
+                    </span>
+                </motion.div>
 
-                    {/* ── CTA buttons ── */}
-                    <motion.div
-                        variants={fadeUp}
-                        className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-end items-center mb-8 md:mb-14"
-                    >
-                        <HeroButton
-                            onClick={() => scrollTo('projects')}
-                            variant="primary"
-                        >
-                            View My Work
-                        </HeroButton>
-                        <HeroButton
-                            onClick={() => scrollTo('contact')}
-                            variant="secondary"
-                        >
-                            Let's Talk
-                        </HeroButton>
-                    </motion.div>
-
-                    {/* ── Tech strip ── */}
-                    <motion.p
-                        variants={fadeUp}
-                        className="text-[10px] font-mono uppercase tracking-[0.2em] text-gray-600"
-                    >
-                        React · Node.js · Express · MongoDB · AI
-                    </motion.p>
-                </div>
-            </motion.div>
-
-            {/* ── Scroll indicator ── */}
-            <motion.div
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-3 hidden sm:flex"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                    delay: shouldReduceMotion ? 0.5 : 2.0,
-                    duration: 0.8,
-                }}
-            >
-                <span className="text-[9px] font-mono uppercase tracking-[0.3em] text-gray-600">
-                    Scroll
-                </span>
-                <motion.div
-                    className="w-px h-8 bg-gradient-to-b from-gray-600 to-transparent origin-top"
-                    animate={
-                        shouldReduceMotion
-                            ? {}
-                            : { scaleY: [1, 0.4, 1] }
-                    }
-                    transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                    }}
-                />
-            </motion.div>
+            </div>
         </section>
     );
 };

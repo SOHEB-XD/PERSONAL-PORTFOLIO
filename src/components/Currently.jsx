@@ -30,7 +30,7 @@ const Currently = () => {
                     variants={container}
                     className="flex justify-between items-baseline mb-20 md:mb-32"
                 >
-                    <motion.p variants={up} className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500">
+                    <motion.p variants={dim} className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500">
                         Currently
                     </motion.p>
                     <motion.span variants={dim} className="text-xs font-mono text-gray-700">
@@ -51,11 +51,11 @@ const Currently = () => {
                         </motion.h3>
                     </div>
 
-                    <motion.p variants={up} className="text-sm md:text-lg font-light text-gray-400 mb-16 leading-relaxed max-w-2xl">
+                    <motion.p variants={dim} className="text-sm md:text-lg font-light text-gray-400 mb-16 leading-relaxed max-w-2xl">
                         I am focused on engineering secure, full-stack systems that connect intuitive interfaces with robust APIs and databases.
                     </motion.p>
 
-                    <motion.div variants={up} className="inline-flex items-center gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/[0.02]">
+                    <motion.div variants={dim} className="inline-flex items-center gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/[0.02]">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-gray-300">
                             Open to relevant opportunities

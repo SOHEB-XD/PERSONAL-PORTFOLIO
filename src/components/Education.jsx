@@ -55,7 +55,7 @@ const Education = () => {
                     variants={container}
                     className="flex justify-between items-baseline mb-20 md:mb-32"
                 >
-                    <motion.p variants={up} className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500">
+                    <motion.p variants={dim} className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500">
                         Education
                     </motion.p>
                     <motion.span variants={dim} className="text-xs font-mono text-gray-700">
@@ -73,12 +73,12 @@ const Education = () => {
                         className="lg:col-span-12"
                     >
                         <div className="border-b border-white/10 pb-4 mb-8">
-                            <motion.p variants={up} className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-600">
+                            <motion.p variants={dim} className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-600">
                                 Academic
                             </motion.p>
                         </div>
                         {education.map((item, idx) => (
-                            <motion.div key={idx} variants={up} className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-12 py-6 border-b border-white/5 last:border-0">
+                            <motion.div key={idx} variants={dim} className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-12 py-6 border-b border-white/5 last:border-0">
                                 <p className="text-[10px] font-mono uppercase tracking-widest text-gray-500 w-40 shrink-0">
                                     {item.year}
                                 </p>
@@ -110,12 +110,12 @@ const Education = () => {
                         className="lg:col-span-12 mt-12"
                     >
                         <div className="border-b border-white/10 pb-4 mb-8">
-                            <motion.p variants={up} className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-600">
+                            <motion.p variants={dim} className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-600">
                                 Training & Certifications
                             </motion.p>
                         </div>
                         {certifications.map((item, idx) => (
-                            <motion.div key={idx} variants={up} className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-12 py-6 border-b border-white/5 last:border-0">
+                            <motion.div key={idx} variants={dim} className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-12 py-6 border-b border-white/5 last:border-0">
                                 <p className="text-[10px] font-mono uppercase tracking-widest text-gray-500 w-40 shrink-0">
                                     {item.year}
                                 </p>

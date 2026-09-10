@@ -4,6 +4,7 @@ import {
     staggerContainer,
     maskReveal,
     fadeUp,
+    fade,
 } from '../animations/variants';
 
 const Contact = () => {
@@ -12,6 +13,7 @@ const Contact = () => {
     const sectionContainer = staggerContainer(reducedMotion, { stagger: 0.1 });
     const reveal = maskReveal(reducedMotion);
     const up = fadeUp(reducedMotion);
+    const dim = fade(reducedMotion);
 
     return (
         <section
@@ -32,7 +34,7 @@ const Contact = () => {
                             LET'S BUILD<br/>SOMETHING.
                         </motion.h2>
                     </div>
-                    <motion.p variants={up} className="text-sm md:text-lg font-light text-gray-400 max-w-xl mx-auto md:mx-0">
+                    <motion.p variants={dim} className="text-sm md:text-lg font-light text-gray-400 max-w-xl mx-auto md:mx-0">
                         Available for MERN stack engineering and full-stack development roles.
                     </motion.p>
                 </motion.div>
@@ -45,21 +47,21 @@ const Contact = () => {
                     className="flex flex-col gap-6 items-center md:items-end"
                 >
                     <motion.a 
-                        variants={up}
+                        variants={dim}
                         href="mailto:soheb8976@gmail.com"
-                        className="text-xl md:text-3xl font-light text-white hover:text-gray-300 transition-colors tracking-wide underline decoration-white/20 underline-offset-8 hover:decoration-white/80"
+                        className="text-xl md:text-3xl font-light text-white hover:text-gray-300 transition-colors tracking-wide underline decoration-white/20 underline-offset-8 hover:decoration-white/80 focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-white"
                     >
                         soheb8976@gmail.com
                     </motion.a>
                     
-                    <motion.div variants={up} className="flex gap-8 mt-4">
-                        <a href="tel:+918866272111" className="text-xs font-mono uppercase tracking-[0.2em] text-gray-500 hover:text-white transition-colors">
+                    <motion.div variants={dim} className="flex gap-8 mt-4">
+                        <a href="tel:+918866272111" className="text-xs font-mono uppercase tracking-[0.2em] text-gray-500 hover:text-white transition-colors focus-visible:outline-none focus-visible:underline">
                             +91-8866272111
                         </a>
-                        <a href="https://linkedin.com/in/soheb-khan-788322308" target="_blank" rel="noopener noreferrer" className="text-xs font-mono uppercase tracking-[0.2em] text-gray-500 hover:text-white transition-colors">
+                        <a href="https://linkedin.com/in/soheb-khan-788322308" target="_blank" rel="noopener noreferrer" className="text-xs font-mono uppercase tracking-[0.2em] text-gray-500 hover:text-white transition-colors focus-visible:outline-none focus-visible:underline">
                             LinkedIn
                         </a>
-                        <a href="https://github.com/SOHEB-XD" target="_blank" rel="noopener noreferrer" className="text-xs font-mono uppercase tracking-[0.2em] text-gray-500 hover:text-white transition-colors">
+                        <a href="https://github.com/SOHEB-XD" target="_blank" rel="noopener noreferrer" className="text-xs font-mono uppercase tracking-[0.2em] text-gray-500 hover:text-white transition-colors focus-visible:outline-none focus-visible:underline">
                             GitHub
                         </a>
                     </motion.div>

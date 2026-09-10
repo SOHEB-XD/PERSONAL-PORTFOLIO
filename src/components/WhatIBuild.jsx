@@ -54,7 +54,7 @@ const WhatIBuild = () => {
                     variants={container}
                     className="flex justify-between items-baseline mb-20 md:mb-32"
                 >
-                    <motion.p variants={up} className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500">
+                    <motion.p variants={dim} className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500">
                         What I Build
                     </motion.p>
                     <motion.span variants={dim} className="text-xs font-mono text-gray-700">
@@ -89,7 +89,7 @@ const WhatIBuild = () => {
                         className="lg:col-span-6 lg:col-start-7 flex flex-col gap-12"
                     >
                         {categories.map((cat, idx) => (
-                            <motion.div key={idx} variants={up} className="border-b border-white/5 pb-12 last:border-0 last:pb-0">
+                            <motion.div key={idx} variants={dim} className="border-b border-white/5 pb-12 last:border-0 last:pb-0">
                                 <div className="flex gap-6 md:gap-10">
                                     <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-600 mt-2">
                                         {cat.num}

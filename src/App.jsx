@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, Suspense, lazy } from 'react';
 import CustomCursor from './components/CustomCursor';
-import LiquidScene from './components/LiquidScene';
 import TopNavbar from './components/TopNavbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -13,6 +12,8 @@ import Education from './components/Education';
 import Currently from './components/Currently';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+
+const LiquidScene = lazy(() => import('./components/LiquidScene'));
 
 /* --------------------------------------------------------------------------
    UTILITY: ICONS (Monochrome Update)
@@ -31,51 +32,14 @@ const Icons = {
     X: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 18 18" /></svg>
 };
 
-/* --------------------------------------------------------------------------
-   COMPONENT: SCROLL REVEAL
-   --------------------------------------------------------------------------
-*/
-const ScrollReveal = ({ children, className = "", delay = 0 }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const ref = useRef(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    observer.disconnect();
-                }
-            },
-            { threshold: 0.1 }
-        );
-        if (ref.current) observer.observe(ref.current);
-        return () => observer.disconnect();
-    }, []);
-
-    return (
-        <div
-            ref={ref}
-            className={`${className} transition-all duration-1000 ease-out transform ${isVisible
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-20'
-                }`}
-            style={{ transitionDelay: `${delay}ms` }}
-        >
-            {children}
-        </div>
-    );
-};
-
-
-
-
 const App = () => {
     return (
         <div className="font-sans antialiased text-white selection:bg-white selection:text-black md:cursor-none">
             <CustomCursor />
-            <LiquidScene />
-            <TopNavbar Icons ={Icons} />
+            <Suspense fallback={<div className="fixed top-0 left-0 w-full h-full -z-10 bg-[#050505]" />}>
+                <LiquidScene />
+            </Suspense>
+            <TopNavbar Icons={Icons} />
             <main className="relative pt-6">
                 <Hero />
                 <About />

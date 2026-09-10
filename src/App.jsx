@@ -78,16 +78,16 @@ const App = () => {
             <TopNavbar Icons ={Icons} />
             <main className="relative pt-6">
                 <Hero />
-                <About ScrollReveal={ScrollReveal} />
-                <Experience ScrollReveal={ScrollReveal} />
-                <Projects ScrollReveal={ScrollReveal} Icons={Icons} />
-                <WhatIBuild ScrollReveal={ScrollReveal} />
-                <Skills ScrollReveal={ScrollReveal} />
-                <Highlights ScrollReveal={ScrollReveal} />
-                <Education ScrollReveal={ScrollReveal} />
-                <Currently ScrollReveal={ScrollReveal} />
-                <Contact ScrollReveal={ScrollReveal} />
-                <Footer ScrollReveal={ScrollReveal} Icons={Icons} />
+                <About />
+                <Experience />
+                <Projects />
+                <WhatIBuild />
+                <Skills />
+                <Highlights />
+                <Education />
+                <Currently />
+                <Contact />
+                <Footer />
             </main>
         </div>
     );

@@ -1,59 +1,135 @@
+import React from 'react';
+import { motion, useReducedMotion } from "motion/react";
+import {
+    staggerContainer,
+    fadeUp,
+    fade,
+} from '../animations/variants';
 
+const Education = () => {
+    const reducedMotion = useReducedMotion();
 
-const Education = ({ ScrollReveal }) => {
+    const container = staggerContainer(reducedMotion, { stagger: 0.1 });
+    const sectionContainer = staggerContainer(reducedMotion, { stagger: 0.1 });
+    const up = fadeUp(reducedMotion);
+    const dim = fade(reducedMotion);
+
+    const education = [
+        {
+            year: "AUG 2024",
+            title: "B.Sc. Information Technology",
+            institution: "University of Mumbai",
+            extra: "CGPA: 6.9"
+        }
+    ];
+
+    const certifications = [
+        {
+            year: "JAN 2025 — MAR 2026",
+            title: "MERN Stack Development Training",
+            institution: "TOPS Technologies"
+        },
+        {
+            year: "2026",
+            title: "Software Developer – Product Development",
+            institution: "TOPS Technologies / NSDC"
+        },
+        {
+            year: "2026",
+            title: "MERN Stack Developer",
+            institution: "TOPS Technologies"
+        }
+    ];
+
     return (
-        <section id="education" className="py-32 px-8 md:px-32 bg-transparent relative overflow-hidden">
-            <div className="max-w-4xl mx-auto relative z-10">
-                <ScrollReveal>
-                    <h2 className="text-4xl md:text-5xl font-bold text-center mb-20 text-white tracking-wide">
-                        ACADEMIC <span className="text-gray-600">ARCHIVE</span>
-                    </h2>
-                </ScrollReveal>
+        <section
+            id="education"
+            className="relative z-10 py-32 md:py-40 px-6 md:px-12 lg:px-16 border-t border-white/5"
+            aria-label="Education and Certifications"
+        >
+            <div className="max-w-7xl mx-auto">
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }}
+                    variants={container}
+                    className="flex justify-between items-baseline mb-20 md:mb-32"
+                >
+                    <motion.p variants={up} className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500">
+                        Education
+                    </motion.p>
+                    <motion.span variants={dim} className="text-xs font-mono text-gray-700">
+                        06
+                    </motion.span>
+                </motion.div>
 
-                <div className="space-y-12 border-l border-white/10 ml-4 md:ml-0 pl-8 md:pl-12">
-
-                    <ScrollReveal delay={200}>
-                        <div className="relative">
-                            <div className="absolute -left-[41px] md:-left-[57px] top-1 w-4 h-4 bg-black border border-cyan-500 rounded-full shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
-                            <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
-                                <h3 className="text-2xl font-bold text-white uppercase">Mern Stack Training</h3>
-                                <span className="text-xs font-mono text-cyan-500">2025 – 2026</span>
-                            </div>
-                            <p className="text-sm text-gray-400 uppercase tracking-widest mb-4">TOPs Technologies</p>
-                            <p className="text-gray-500 text-sm max-w-xl leading-relaxed">
-                                Intensive training in MongoDB, Express.js, React.js, and Node.js.
-                                Developing scalable full-stack web applications and RESTful APIs.
-                            </p>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
+                    {/* Education List */}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.2 }}
+                        variants={sectionContainer}
+                        className="lg:col-span-12"
+                    >
+                        <div className="border-b border-white/10 pb-4 mb-8">
+                            <motion.p variants={up} className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-600">
+                                Academic
+                            </motion.p>
                         </div>
-                    </ScrollReveal>
+                        {education.map((item, idx) => (
+                            <motion.div key={idx} variants={up} className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-12 py-6 border-b border-white/5 last:border-0">
+                                <p className="text-[10px] font-mono uppercase tracking-widest text-gray-500 w-40 shrink-0">
+                                    {item.year}
+                                </p>
+                                <div className="flex flex-col md:flex-row md:justify-between w-full gap-2">
+                                    <p className="text-sm md:text-base font-semibold tracking-wide text-white uppercase">
+                                        {item.title}
+                                    </p>
+                                    <div className="md:text-right flex flex-col md:items-end">
+                                        <p className="text-xs md:text-sm font-light text-gray-400">
+                                            {item.institution}
+                                        </p>
+                                        {item.extra && (
+                                            <p className="text-[10px] font-mono text-gray-500 mt-1 uppercase tracking-widest">
+                                                {item.extra}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
 
-                    <ScrollReveal delay={200}>
-                        <div className="relative">
-                            <div className="absolute -left-[41px] md:-left-[57px] top-1 w-4 h-4 bg-black border border-white rounded-full"></div>
-                            <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
-                                <h3 className="text-2xl font-bold text-white uppercase">BSc IT</h3>
-                                <span className="text-xs font-mono text-gray-500">2021 – 2024</span>
-                            </div>
-                            <p className="text-sm text-gray-400 uppercase tracking-widest mb-4">University of Mumbai</p>
-                            <p className="text-gray-500 text-sm max-w-xl leading-relaxed">
-                                Specialized in Advanced Web Technologies and Database Management.
-                            </p>
+                    {/* Certifications List */}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.2 }}
+                        variants={sectionContainer}
+                        className="lg:col-span-12 mt-12"
+                    >
+                        <div className="border-b border-white/10 pb-4 mb-8">
+                            <motion.p variants={up} className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-600">
+                                Training & Certifications
+                            </motion.p>
                         </div>
-                    </ScrollReveal>
-
-                    <ScrollReveal delay={400}>
-                        <div className="relative">
-                            <div className="absolute -left-[41px] md:-left-[57px] top-1 w-4 h-4 bg-black border border-gray-600 rounded-full"></div>
-                            <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
-                                <h3 className="text-2xl font-bold text-white uppercase">Higher Secondary</h3>
-                                <span className="text-xs font-mono text-gray-500">2020 - 2021</span>
-                            </div>
-                            <p className="text-sm text-gray-400 uppercase tracking-widest mb-4">Govt. Higher Secondary School, Silvassa</p>
-                            <p className="text-gray-500 text-sm max-w-xl leading-relaxed">
-
-                            </p>
-                        </div>
-                    </ScrollReveal>
+                        {certifications.map((item, idx) => (
+                            <motion.div key={idx} variants={up} className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-12 py-6 border-b border-white/5 last:border-0">
+                                <p className="text-[10px] font-mono uppercase tracking-widest text-gray-500 w-40 shrink-0">
+                                    {item.year}
+                                </p>
+                                <div className="flex flex-col md:flex-row md:justify-between w-full gap-2">
+                                    <p className="text-sm md:text-base font-semibold tracking-wide text-white uppercase">
+                                        {item.title}
+                                    </p>
+                                    <p className="text-xs md:text-sm font-light text-gray-400 md:text-right">
+                                        {item.institution}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
                 </div>
             </div>
         </section>

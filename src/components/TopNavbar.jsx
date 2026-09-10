@@ -21,7 +21,7 @@ const TopNavbar = ({Icons}) => {
     const navLinks = [
         { id: 'about', label: 'About' },
         { id: 'experience', label: 'Experience' },
-        { id: 'projects', label: 'Work' },
+        { id: 'work', label: 'Work' },
         { id: 'skills', label: 'Skills' },
         { id: 'contact', label: 'Contact' },
     ];
